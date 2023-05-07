@@ -138,3 +138,87 @@ ThreadNode *NextNode(ThreadNode *p)
         return p;
     }
 }
+//找中序线索二叉树中结点p的前驱结点
+ThreadNode *PreNode(ThreadNode *p)
+{
+    if (p->ltag == 0)
+    {
+        return p->lchild;
+    }
+    else
+    {
+        p = p->lchild;
+        while (p->rtag == 1)
+        {
+            p = p->rchild;
+        }
+        return p;
+    }
+}
+//对中序线索二叉树进行中序遍历
+void InOrder(ThreadTree T)
+{
+    for (ThreadNode *p = T; p != NULL; p = NextNode(p))
+    {
+        cout << p->data << " ";
+    }
+}
+//对中序线索二叉树进行逆向中序遍历
+void InOrderReverse(ThreadTree T)
+{
+    for (ThreadNode *p = T; p != NULL; p = PreNode(p))
+    {
+        cout << p->data << " ";
+    }
+}
+
+//找先序线索二叉树中结点p的后继结点
+ThreadNode *NextNodePre(ThreadNode *p)
+{
+    if (p->ltag == 0)
+    {
+        return p->lchild;
+    }
+    else
+    {
+        while (p->rtag == 1)
+        {
+            p = p->rchild;
+        }
+        return p->rchild;
+    }
+}
+//对先序线索二叉树进行先序遍历
+void PreOrder(ThreadTree T)
+{
+    for (ThreadNode *p = T; p != NULL; p = NextNodePre(p))
+    {
+        cout << p->data << " ";
+    }
+}
+
+//找后序线索二叉树中结点p的前驱结点
+ThreadNode *PreNodePost(ThreadNode *p)
+{
+    if (p->rtag == 0)
+    {
+        return p->rchild;
+    }
+    else
+    {
+        while (p->ltag == 1)
+        {
+            p = p->lchild;
+        }
+        return p->lchild;
+    }
+}
+
+//对后序线索二叉树进行后序遍历
+void PostOrder(ThreadTree T)
+{
+    for (ThreadNode *p = T; p != NULL; p = NextNodePost(p))
+    {
+        cout << p->data << " ";
+    }
+}
