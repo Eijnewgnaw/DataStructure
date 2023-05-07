@@ -172,6 +172,7 @@ void InOrderReverse(ThreadTree T)
     }
 }
 
+//先序线索二叉树无法找到结点p的前驱结点
 //找先序线索二叉树中结点p的后继结点
 ThreadNode *NextNodePre(ThreadNode *p)
 {
@@ -197,6 +198,7 @@ void PreOrder(ThreadTree T)
     }
 }
 
+//后续线索二叉树无法找到结点p的后继结点
 //找后序线索二叉树中结点p的前驱结点
 ThreadNode *PreNodePost(ThreadNode *p)
 {
