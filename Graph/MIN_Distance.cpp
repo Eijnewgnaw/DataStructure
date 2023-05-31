@@ -2,8 +2,10 @@
 #include <iostream>
 #include <queue>
 
-//利用广度优先搜索算法，求从顶点u到其他顶点的最短路径(适用于无权图)
+//单源最短路径：BFS；Dijkstra
+//各顶点间最短路径：Floyd
 
+//利用广度优先搜索算法，求从顶点u到其他顶点的最短路径(适用于无权图)
 void BFS_MIN_DISTANCE(Graph g,int u){
     int distance[MAX_VERTEX_NUM];       // 从u到v的最短距离
     int path[MAX_VERTEX_NUM];        // 从u到v的最短路径上v的前一个顶点
@@ -60,7 +62,7 @@ void Dijkstra(Graph g,int u){
         visited[v]=true;
         for(int w=FirstNeighbor(g,v);w>=0;w=NextNeighbor(g,v,w)){
             if(!visited[w]&&distance[w]>distance[v]+g.arcs[v][w]){      // 更新距离
-                distance[w]=distance[v]+g.arcs[v][w];
+                distance[w]=distance[v]+g.arcs[v][w];   //g.arcs[v][w]表示v到w的距离
                 path[w]=v;
             }
         }
@@ -80,9 +82,9 @@ void Floyd(Graph g){
             path[i][j]=-1;            // 初始化为-1
         }
     }
-    for(int k=0;k<g.vexnum;++k){
-        for(int i=0;i<g.vexnum;++i){
-            for(int j=0;j<g.vexnum;++j){
+    for(int k=0;k<g.vexnum;++k){                // 顶点k作为中间顶点
+        for(int i=0;i<g.vexnum;++i){            // 遍历整个矩阵
+            for(int j=0;j<g.vexnum;++j){        
                 if(distance[i][j]>distance[i][k]+distance[k][j]){      // 更新距离
                     distance[i][j]=distance[i][k]+distance[k][j];
                     path[i][j]=k;
