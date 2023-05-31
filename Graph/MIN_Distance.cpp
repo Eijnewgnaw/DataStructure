@@ -2,7 +2,7 @@
 #include <iostream>
 #include <queue>
 
-//利用广度优先搜索算法，求从顶点u到其他顶点的最短路径
+//利用广度优先搜索算法，求从顶点u到其他顶点的最短路径(适用于无权图)
 
 void BFS_MIN_DISTANCE(Graph g,int u){
     int distance[MAX_VERTEX_NUM];       // 从u到v的最短距离
