@@ -19,6 +19,7 @@ AVLNode *AVLSearch(AVLTree T, int key) {
         return AVLSearch(T->rchild, key);
     }
 }
+//时间复杂度O(logn)
 
 //对以p为根的二叉排序树作右旋处理
 void R_Rotate(AVLTree &p) {
@@ -152,3 +153,88 @@ int AVLInsert(AVLTree &T, int e, bool &taller) {
     return 1;
 }
 
+//删除以指针T所指结点为根的二叉排序树中关键字等于e的结点
+int AVLDelete(AVLTree &T, int e, bool &shorter) {
+    if (T == NULL) {    //不存在关键字等于e的结点
+        return 0;
+    } else {
+        if (e == T->data) {     //找到关键字等于e的结点
+            AVLTree q;
+            if (T->lchild == NULL) {    //左子树为空
+                q = T;
+                T = T->rchild;
+                free(q);
+                shorter = true;
+            } else if (T->rchild == NULL) {     //右子树为空
+                q = T;
+                T = T->lchild;
+                free(q);
+                shorter = true;
+            } else {                //左右子树均不为空
+                q = T->lchild;
+                while (q->rchild != NULL) {     //在左子树中找最大值结点
+                    q = q->rchild;
+                }
+                T->data = q->data;      //用q结点的值替代T结点的值
+                AVLDelete(T->lchild, q->data, shorter);    //在左子树中删除结点q
+                if (shorter) {          //左子树“矮”了
+                    switch (T->bf) {
+                        case 1:         //原本左子树比右子树高，现左右子树等高
+                            T->bf = 0;
+                            shorter = true;
+                            break;
+                        case 0:         //原本左右子树等高，现因左子树减矮而使树减矮
+                            T->bf = -1;
+                            shorter = false;
+                            break;
+                        case -1:        //原本右子树比左子树高，需要作右平衡处理
+                            RightBalance(T);
+                            shorter = true;
+                            break;
+                    }
+                }
+            }
+        } else if (e < T->data) {    //应继续在T的左子树中进行搜索
+            if (!AVLDelete(T->lchild, e, shorter)) {    //未删除
+                return 0;
+            }
+            if (shorter) {          //已在T的左子树中删除结点且左子树“矮”了
+                switch (T->bf) {
+                    case 1:         //原本左子树比右子树高，现左右子树等高
+                        T->bf = 0;
+                        shorter = true;
+                        break;
+                    case 0:         //原本左右子树等高，现因左子树减矮而使树减矮
+                        T->bf = -1;
+                        shorter = false;
+                        break;
+                    case -1:        //原本右子树比左子树高，需要作右平衡处理
+                        RightBalance(T);
+                        shorter = true;
+                        break;
+                }
+            }
+        } else {                    //应继续在T的右子树中进行搜索
+            if (!AVLDelete(T->rchild, e, shorter)) {    //未删除
+                return 0;
+            }
+            if (shorter) {          //已在T的右子树中删除结点且右子树“矮”了
+                switch (T->bf) {
+                    case 1:         //原本左子树比右子树高，需要作左平衡处理
+                        LeftBalance(T);
+                        shorter = true;
+                        break;
+                    case 0:         //原本左右子树等高，现因右子树减矮而使树减矮
+                        T->bf = 1;
+                        shorter = false;
+                        break;
+                    case -1:        //原本右子树比左子树高，现左右子树等高
+                        T->bf = 0;
+                        shorter = true;
+                        break;
+                }
+            }
+        }
+    }
+    return 1;
+}
