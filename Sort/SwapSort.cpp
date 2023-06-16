@@ -40,7 +40,7 @@ int Partition(int A[], int low, int high)
     return low;
 }
 
-void QSort(int A[], int low, int high)
+void QuickSort(int A[], int low, int high)
 {
     if (low < high)
     {
@@ -49,13 +49,8 @@ void QSort(int A[], int low, int high)
         QSort(A, pivotpos + 1, high);
     }
 }
-
-void QuickSort(int A[], int n)
-{
-    QSort(A, 0, n - 1);
-}
-
 // 时间复杂度：O(nlogn)，空间复杂度：O(logn)，不稳定
+//最坏时间复杂度：O(n^2)，最坏空间复杂度：O(n)；取决于划分是否平衡，反应为树的深度，递归的栈空间层数
 
 int main(){
     int arr[] = {5, 2, 8, 1, 4};
@@ -68,7 +63,7 @@ int main(){
     }
     std::cout << std::endl;
 
-    BubbleSort(arr, size);
+    QuickSort(arr, 0,size-1);
 
     std::cout << "排序结果：";
     for (int i = 0; i < size; i++)
