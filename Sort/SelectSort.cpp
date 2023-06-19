@@ -37,12 +37,14 @@ void HeapAdjust(int A[], int s, int len)
     }
     A[s] = A[0];    //将暂存的值赋值给最终位置
 }
+//时间复杂度：O(logn),下坠时间复杂度为树的高度，即logn
 
 void BuildMaxHeap(int A[], int n)
 {
     for (int i = n / 2; i >0; i--)
         HeapAdjust(A, i, n);
 }
+//O(n)时间建立初始堆
 
 void HeapSort(int A[], int len)
 {
@@ -55,7 +57,7 @@ void HeapSort(int A[], int len)
         HeapAdjust(A, 1, i - 1);    //将剩余的元素整理成堆
     }
 }
-
+//共进行n-1趟排序，每趟排序的时间复杂度为O(logn)，所以总的时间复杂度为O(nlogn)
 // 时间复杂度：O(nlogn)，空间复杂度：O(1)，不稳定
 
 int main(){
